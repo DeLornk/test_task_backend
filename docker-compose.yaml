@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./
+    command: ./web
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    env_file:
+      - config/.env
+
+
+  postgres:
+    image: postgres:12
+    restart: always
+    ports:
+      - 5436:5432
+    volumes:
+      - ./config/init.sql:/docker-entrypoint-initdb.d/10-init.sql
+    env_file:
+      - config/.env
